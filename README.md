@@ -10,7 +10,7 @@ Gelände, Wald, Gebäude und Lifte stammen aus swisstopo-Geodaten. Modelle und S
 | Lauberhorn | Wengen | spielbar |
 | Mont Lachaux | Crans-Montana | spielbar |
 | Engiadina | St. Moritz | spielbar |
-| Silvano Beltrametti | Lenzerheide | geplant |
+| Silvano Beltrametti | Lenzerheide | spielbar |
 | Gran Becca | Zermatt / Cervinia | geplant |
 
 Modi: **Rennen** (Zeit, Tore, Geist der Bestzeit), **Training** (Sprung zu Schlüsselstellen), **Freeride** (ganzer Berg, Lifte).

@@ -165,5 +165,79 @@
       "Reinaltersprung",
       "Lärchenweg"
     ]
+  },
+  "beltrametti": {
+    "name": "Silvano Beltrametti",
+    "place": "Lenzerheide",
+    "comment": "Rennlinie = OSM 'Piste Silvano Beltrametti' + 'Weltcup-Strecke Silvano Beltrametti' + 'Heimberg' + 'Rennpiste Heimberg' (gespleisst); Start 2257 m / Ziel 1560 m (FIS 2014)",
+    "origin_lv95": [
+      2759800,
+      1176400
+    ],
+    "chunks": [
+      11,
+      10
+    ],
+    "chunk_m": 512,
+    "core_lv95": [
+      2759800,
+      1176400,
+      2765432,
+      1181520
+    ],
+    "panorama_radius_m": 22000,
+    "osm_way_ids": [
+      574178904,
+      573061424,
+      32043886,
+      574761206
+    ],
+    "osm_splice": true,
+    "start_alt": 2258,
+    "finish_alt": 1560,
+    "sections": [
+      [
+        "Start",
+        0.0
+      ],
+      [
+        "Startsteilhang",
+        0.07
+      ],
+      [
+        "Rothorn-Flanke",
+        0.2
+      ],
+      [
+        "Steilhang Parpan",
+        0.33
+      ],
+      [
+        "Kante",
+        0.45
+      ],
+      [
+        "Waldschneise",
+        0.58
+      ],
+      [
+        "Heimberg",
+        0.7
+      ],
+      [
+        "Rennpiste",
+        0.82
+      ],
+      [
+        "Zielhang",
+        0.92
+      ]
+    ],
+    "splits": [
+      "Rothorn-Flanke",
+      "Kante",
+      "Heimberg",
+      "Zielhang"
+    ]
   }
 }

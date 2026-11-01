@@ -194,7 +194,22 @@ def main(course):
             lat = [p["lat"] for p in el["geometry"]]
             e, n = wgs84_to_lv95(lon, lat)
             ways.append(np.c_[e, n])
-    line = chain_ways(ways, lambda e, n: float(sample(dem, 2, e, n)[0]))
+    if cfg.get("osm_splice"):
+        # Wege in der angegebenen Reihenfolge: jeder naechste Weg wird an seinem Punkt
+        # betreten, der dem bisherigen Ende am naechsten liegt (Luecken gerade ueberbrueckt).
+        byid = {}
+        for el in osm["elements"]:
+            if el["id"] in cfg["osm_way_ids"]:
+                e, n = wgs84_to_lv95([p["lon"] for p in el["geometry"]], [p["lat"] for p in el["geometry"]])
+                byid[el["id"]] = np.c_[e, n]
+        parts = [byid[cfg["osm_way_ids"][0]]]
+        for wid in cfg["osm_way_ids"][1:]:
+            nxt = byid[wid]
+            k = int(np.argmin(np.hypot(nxt[:, 0] - parts[-1][-1, 0], nxt[:, 1] - parts[-1][-1, 1])))
+            parts.append(nxt[k + 1:] if np.hypot(*(nxt[k] - parts[-1][-1])) < 1 else nxt[k:])
+        line = np.vstack(parts)
+    else:
+        line = chain_ways(ways, lambda e, n: float(sample(dem, 2, e, n)[0]))
     line = resample_line(line, 2.0)
     line = smooth_line(smooth_line(line, 11), 11)
     line = resample_line(line, 2.0)

@@ -12,7 +12,7 @@ const COURSES = [
   { id: 'lauberhorn', name: 'Lauberhorn', place: 'Wengen', info: '≈4,1 km · 2315 → 1280 m', ready: true },
   { id: 'montlachaux', name: 'Mont Lachaux', place: 'Crans-Montana', info: '≈2,3 km · 2210 → 1545 m', ready: true },
   { id: 'engiadina', name: 'Engiadina', place: 'St. Moritz', info: '≈2,5 km · 2745 → 2040 m', ready: true },
-  { id: 'beltrametti', name: 'Silvano Beltrametti', place: 'Lenzerheide', info: 'Weltcupfinal', ready: false },
+  { id: 'beltrametti', name: 'Silvano Beltrametti', place: 'Lenzerheide', info: '≈2 km · 2257 → 1560 m', ready: true },
   { id: 'granbecca', name: 'Gran Becca', place: 'Zermatt / Cervinia', info: 'Höchste Abfahrt', ready: false },
 ];
 const MODE_HINT: Record<Mode, string> = {
