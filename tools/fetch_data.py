@@ -131,7 +131,12 @@ def fetch_osm_pistes(core, out):
     ne = lv95_to_wgs84(core[2], core[3])
     q = (f'[out:json][timeout:90];(way["piste:type"="downhill"]({w[1]},{w[0]},{ne[1]},{ne[0]});'
          f'way["aerialway"]({w[1]},{w[0]},{ne[1]},{ne[0]}););out geom tags;')
-    r = requests.post("https://overpass-api.de/api/interpreter", data={"data": q}, headers=UA, timeout=120)
+    for attempt in range(6):   # oeffentlicher Server ist oft ausgelastet -> mit Pause wiederholen
+        r = requests.post("https://overpass-api.de/api/interpreter", data={"data": q}, headers=UA, timeout=120)
+        if r.ok:
+            break
+        print("  osm: Server ausgelastet, warte", 10 * 2 ** attempt, "s")
+        time.sleep(10 * 2 ** attempt)
     r.raise_for_status()
     dest.write_text(r.text, encoding="utf-8")
     print("osm: pisten/bahnen", len(r.json()["elements"]))

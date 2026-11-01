@@ -188,7 +188,8 @@ def main(course):
     osm = json.loads((raw / "osm_pistes.json").read_text(encoding="utf-8"))
     ways = []
     for el in osm["elements"]:
-        if el.get("tags", {}).get("name") == cfg["osm_piste_name"]:
+        tags = el.get("tags", {})
+        if (el["id"] in cfg.get("osm_way_ids", [])) or (cfg.get("osm_piste_name") and tags.get("name") == cfg["osm_piste_name"]):
             lon = [p["lon"] for p in el["geometry"]]
             lat = [p["lat"] for p in el["geometry"]]
             e, n = wgs84_to_lv95(lon, lat)
@@ -197,6 +198,19 @@ def main(course):
     line = resample_line(line, 2.0)
     line = smooth_line(smooth_line(line, 11), 11)
     line = resample_line(line, 2.0)
+    finish_i = len(line) - 25
+    if "start_alt" in cfg or "finish_alt" in cfg:
+        hl = sample(dem, 2, line[:, 0], line[:, 1])
+        i0 = int(np.argmax(hl <= cfg.get("start_alt", 1e9))) if "start_alt" in cfg else 0
+        line = line[i0:]
+        hl = hl[i0:]
+        if "finish_alt" in cfg and (hl <= cfg["finish_alt"]).any():
+            fi = int(np.argmax(hl <= cfg["finish_alt"]))
+            line = line[: fi + 45]          # ~90 m Auslauf nach dem Ziel
+            finish_i = fi
+        else:
+            finish_i = len(line) - 25
+    finish_i = min(finish_i, len(line) - 25)
     L = len(line) * 2.0
     print(f"   Laenge {L:.0f} m, Start {sample(dem, 2, *line[0])[0]:.0f} m, Ende {sample(dem, 2, *line[-1])[0]:.0f} m")
 
@@ -328,7 +342,6 @@ def main(course):
     wt = np.c_[np.cos(ang), np.sin(ang)]
     wn = np.c_[-wt[:, 1], wt[:, 0]]
     ys = sample(h4, STEP, line[:, 0], line[:, 1])
-    finish_i = len(line) - 25
     gates = []
     gi = 40
     while gi < finish_i - 30:
@@ -336,14 +349,14 @@ def main(course):
         c = world[gi] + wn[gi] * off
         gates.append({"i": int(gi), "s": gi * 2.0, "x": round(float(c[0]), 2), "z": round(float(c[1]), 2),
                       "dx": round(float(wt[gi, 0]), 4), "dz": round(float(wt[gi, 1]), 4), "w": 12.0})
-        step = 55 if abs(curv[gi]) > 0.004 else 60
+        step = 38 if abs(curv[gi]) > 0.004 else 44
         gi += step
     for k, gt in enumerate(gates):
         gt["y"] = round(float(sample(h4, STEP, gt["x"] + E0, N1 - gt["z"])[0]), 2)
         gt["color"] = "red" if k % 2 == 0 else "blue"
 
     secs = []
-    for item in SECTIONS.get(course, []):
+    for item in SECTIONS.get(course) or [tuple(x) for x in cfg.get("sections", [["Start", 0.0]])]:
         if item[1] is None:
             e, n = item[2]
             si = int(np.argmin(np.hypot(line[:, 0] - e, line[:, 1] - n)))
@@ -351,7 +364,7 @@ def main(course):
             si = int(item[1] * (finish_i))
         secs.append({"name": item[0], "s": si * 2.0})
     secs.sort(key=lambda s: s["s"])
-    splits = [s["s"] for s in secs if s["name"] in SPLITS.get(course, [])]
+    splits = [s["s"] for s in secs if s["name"] in (SPLITS.get(course) or cfg.get("splits", []))]
 
     lifts = []
     for lf in read_gpkg_lines(ROOT / "data" / "raw" / "bahnen-winter_2056.gpkg", B):

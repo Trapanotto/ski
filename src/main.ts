@@ -10,7 +10,7 @@ import { GhostRecorder, sampleGhost, loadBest, saveBest, type Best } from './gho
 
 const COURSES = [
   { id: 'lauberhorn', name: 'Lauberhorn', place: 'Wengen', info: '≈4,1 km · 2315 → 1280 m', ready: true },
-  { id: 'montlachaux', name: 'Mont Lachaux', place: 'Crans-Montana', info: 'WM-Strecke 2027', ready: false },
+  { id: 'montlachaux', name: 'Mont Lachaux', place: 'Crans-Montana', info: '≈2,3 km · 2210 → 1545 m', ready: true },
   { id: 'engiadina', name: 'Engiadina', place: 'St. Moritz', info: 'Corviglia', ready: false },
   { id: 'beltrametti', name: 'Silvano Beltrametti', place: 'Lenzerheide', info: 'Weltcupfinal', ready: false },
   { id: 'granbecca', name: 'Gran Becca', place: 'Zermatt / Cervinia', info: 'Höchste Abfahrt', ready: false },
@@ -478,6 +478,8 @@ if (import.meta.env.DEV) {
       } : null;
     },
     jump: (s: number) => { startRun(s); },
+    /** Simulation ohne Rendern vorspulen (Tests im verdeckten Fenster). */
+    run: (sec: number) => { for (let t = 0; t < sec && running && !paused; t += 1 / 60) { input.update(1 / 60); simulate(1 / 60); } },
     world: () => world,
     autopilot: false,
   };

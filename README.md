@@ -8,7 +8,7 @@ Gelände, Wald, Gebäude und Lifte stammen aus swisstopo-Geodaten. Modelle und S
 | Strecke | Ort | Stand |
 |---|---|---|
 | Lauberhorn | Wengen | spielbar |
-| Mont Lachaux | Crans-Montana | geplant |
+| Mont Lachaux | Crans-Montana | spielbar |
 | Engiadina | St. Moritz | geplant |
 | Silvano Beltrametti | Lenzerheide | geplant |
 | Gran Becca | Zermatt / Cervinia | geplant |

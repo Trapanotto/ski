@@ -9,5 +9,22 @@
     "core_lv95": [2635500, 1157400, 2641132, 1162520],
     "panorama_radius_m": 22000,
     "osm_piste_name": "Lauberhorn Weltcup-Abfahrt"
+  },
+  "montlachaux": {
+    "name": "Mont Lachaux",
+    "place": "Crans-Montana",
+    "comment": "Rennlinie = OSM-Piste 12 (Cry d'Er -> Les Barzettes), zugeschnitten auf Start 2210 m / Ziel 1545 m (FIS)",
+    "origin_lv95": [2601400, 1128300],
+    "chunks": [10, 9],
+    "chunk_m": 512,
+    "core_lv95": [2601400, 1128300, 2606520, 1132908],
+    "panorama_radius_m": 22000,
+    "osm_way_ids": [208126913],
+    "start_alt": 2210,
+    "finish_alt": 1545,
+    "sections": [["Start", 0.0], ["Startsteilhang", 0.06], ["Cry d'Er-Kante", 0.18], ["Traverse", 0.3],
+                 ["Waldeinfahrt", 0.42], ["Waldpassage", 0.55], ["Steilstück", 0.68], ["Sprung", 0.8],
+                 ["Zielschuss", 0.9]],
+    "splits": ["Cry d'Er-Kante", "Waldeinfahrt", "Steilstück", "Zielschuss"]
   }
 }
