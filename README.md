@@ -9,7 +9,7 @@ Gelände, Wald, Gebäude und Lifte stammen aus swisstopo-Geodaten. Modelle und S
 |---|---|---|
 | Lauberhorn | Wengen | spielbar |
 | Mont Lachaux | Crans-Montana | spielbar |
-| Engiadina | St. Moritz | geplant |
+| Engiadina | St. Moritz | spielbar |
 | Silvano Beltrametti | Lenzerheide | geplant |
 | Gran Becca | Zermatt / Cervinia | geplant |
 

@@ -3,10 +3,21 @@
     "name": "Lauberhorn",
     "place": "Wengen",
     "comment": "Spielfeld = 11 x 10 Bloecke a 512 m ab Ursprung (LV95)",
-    "origin_lv95": [2635500, 1157400],
-    "chunks": [11, 10],
+    "origin_lv95": [
+      2635500,
+      1157400
+    ],
+    "chunks": [
+      11,
+      10
+    ],
     "chunk_m": 512,
-    "core_lv95": [2635500, 1157400, 2641132, 1162520],
+    "core_lv95": [
+      2635500,
+      1157400,
+      2641132,
+      1162520
+    ],
     "panorama_radius_m": 22000,
     "osm_piste_name": "Lauberhorn Weltcup-Abfahrt"
   },
@@ -14,17 +25,145 @@
     "name": "Mont Lachaux",
     "place": "Crans-Montana",
     "comment": "Rennlinie = OSM-Piste 12 (Cry d'Er -> Les Barzettes), zugeschnitten auf Start 2210 m / Ziel 1545 m (FIS)",
-    "origin_lv95": [2601400, 1128300],
-    "chunks": [10, 9],
+    "origin_lv95": [
+      2601400,
+      1128300
+    ],
+    "chunks": [
+      10,
+      9
+    ],
     "chunk_m": 512,
-    "core_lv95": [2601400, 1128300, 2606520, 1132908],
+    "core_lv95": [
+      2601400,
+      1128300,
+      2606520,
+      1132908
+    ],
     "panorama_radius_m": 22000,
-    "osm_way_ids": [208126913],
+    "osm_way_ids": [
+      208126913
+    ],
     "start_alt": 2210,
     "finish_alt": 1545,
-    "sections": [["Start", 0.0], ["Startsteilhang", 0.06], ["Cry d'Er-Kante", 0.18], ["Traverse", 0.3],
-                 ["Waldeinfahrt", 0.42], ["Waldpassage", 0.55], ["Steilstück", 0.68], ["Sprung", 0.8],
-                 ["Zielschuss", 0.9]],
-    "splits": ["Cry d'Er-Kante", "Waldeinfahrt", "Steilstück", "Zielschuss"]
+    "sections": [
+      [
+        "Start",
+        0.0
+      ],
+      [
+        "Startsteilhang",
+        0.06
+      ],
+      [
+        "Cry d'Er-Kante",
+        0.18
+      ],
+      [
+        "Traverse",
+        0.3
+      ],
+      [
+        "Waldeinfahrt",
+        0.42
+      ],
+      [
+        "Waldpassage",
+        0.55
+      ],
+      [
+        "Steilstück",
+        0.68
+      ],
+      [
+        "Sprung",
+        0.8
+      ],
+      [
+        "Zielschuss",
+        0.9
+      ]
+    ],
+    "splits": [
+      "Cry d'Er-Kante",
+      "Waldeinfahrt",
+      "Steilstück",
+      "Zielschuss"
+    ]
+  },
+  "engiadina": {
+    "name": "Engiadina",
+    "place": "St. Moritz",
+    "comment": "Rennlinie = OSM 'Engiadina/Muot Alpina DH Women' + 'Corviglia Run' bis Salastrains; Start 2745 m / Ziel 2040 m (FIS)",
+    "origin_lv95": [
+      2779800,
+      1149900
+    ],
+    "chunks": [
+      11,
+      10
+    ],
+    "chunk_m": 512,
+    "core_lv95": [
+      2779800,
+      1149900,
+      2785432,
+      1155020
+    ],
+    "panorama_radius_m": 22000,
+    "osm_way_ids": [
+      698803262,
+      158408892
+    ],
+    "start_alt": 2746,
+    "finish_alt": 2040,
+    "sections": [
+      [
+        "Start",
+        0.0
+      ],
+      [
+        "Muot Alpina",
+        0.08
+      ],
+      [
+        "Super-G-Start",
+        0.22
+      ],
+      [
+        "Foppa",
+        0.35
+      ],
+      [
+        "Gianda",
+        0.45
+      ],
+      [
+        "Grosses Loch",
+        0.55
+      ],
+      [
+        "Weisses Band",
+        0.65
+      ],
+      [
+        "Reinaltersprung",
+        0.75
+      ],
+      [
+        "Engnis",
+        0.85
+      ],
+      [
+        "Lärchenweg",
+        0.92
+      ]
+    ],
+    "splits": [
+      "Super-G-Start",
+      "Grosses Loch",
+      "Reinaltersprung",
+      "Lärchenweg"
+    ]
   }
 }
