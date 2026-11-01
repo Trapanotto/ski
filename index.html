@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#d52b1e" />
+  <title>Trapanotto Ski – Swiss Downhill</title>
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <!-- Ladeanzeige -->
+  <div id="loading" class="screen hidden">
+    <div class="logo"><span class="cross">+</span> TRAPANOTTO SKI</div>
+    <div class="bar"><div id="loadbar"></div></div>
+    <div id="loadtext">Lade Gelände …</div>
+  </div>
+
+  <!-- Hauptmenü -->
+  <div id="menu" class="screen">
+    <div class="menu-card">
+      <div class="logo"><span class="cross">+</span> TRAPANOTTO SKI</div>
+      <div class="sub">Swiss Downhill · Trapanotto Ski Team</div>
+
+      <h3>Strecke</h3>
+      <div id="courses" class="grid"></div>
+
+      <h3>Fahrer</h3>
+      <div class="row" id="riders">
+        <button class="opt sel" data-rider="M">Herren</button>
+        <button class="opt" data-rider="F">Damen</button>
+      </div>
+
+      <h3>Modus</h3>
+      <div class="row" id="modes">
+        <button class="opt sel" data-mode="race">Rennen</button>
+        <button class="opt" data-mode="training">Training</button>
+        <button class="opt" data-mode="freeride">Freeride</button>
+      </div>
+      <div id="modehint" class="hint"></div>
+
+      <h3>Grafik</h3>
+      <div class="row" id="quality">
+        <button class="opt" data-q="low">Niedrig</button>
+        <button class="opt" data-q="mid">Mittel</button>
+        <button class="opt" data-q="high">Hoch</button>
+      </div>
+
+      <button id="play" class="big">Los!</button>
+      <div class="help" id="help"></div>
+      <div class="attr">Geodaten © swisstopo · Pistenlinien © OpenStreetMap-Mitwirkende</div>
+    </div>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div id="timer">0:00.00</div>
+    <div id="split"></div>
+    <div id="speed"><b>0</b><small>km/h</small></div>
+    <div id="info"></div>
+    <div id="msg"></div>
+    <div id="section"></div>
+    <canvas id="minimap" width="180" height="180"></canvas>
+  </div>
+
+  <!-- Touch -->
+  <div id="touch" class="hidden">
+    <div id="stickzone"><div id="stickbase"><div id="stickknob"></div></div></div>
+    <button id="tJump" class="tbtn">Sprung</button>
+    <button id="tTuck" class="tbtn">Hocke</button>
+    <button id="tPause" class="tsmall">II</button>
+    <button id="tCam" class="tsmall">Kamera</button>
+    <button id="tLift" class="tsmall hidden">Lift</button>
+  </div>
+
+  <!-- Pause -->
+  <div id="pause" class="screen hidden">
+    <div class="menu-card small">
+      <h2>Pause</h2>
+      <button class="big" id="resume">Weiter</button>
+      <button class="opt wide" id="restart">Neustart</button>
+      <div id="sectionjump"></div>
+      <button class="opt wide" id="tomenu">Hauptmenü</button>
+    </div>
+  </div>
+
+  <!-- Resultat -->
+  <div id="result" class="screen hidden">
+    <div class="menu-card small">
+      <h2 id="restitle">Ziel!</h2>
+      <div id="restime" class="restime"></div>
+      <div id="resdetail"></div>
+      <button class="big" id="again">Nochmals</button>
+      <button class="opt wide" id="resmenu">Hauptmenü</button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.venv/
+data/raw/
+data/work/
+*.blend1
+__pycache__/
+.claude/

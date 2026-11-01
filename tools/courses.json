@@ -1,0 +1,13 @@
+{
+  "lauberhorn": {
+    "name": "Lauberhorn",
+    "place": "Wengen",
+    "comment": "Spielfeld = 11 x 10 Bloecke a 512 m ab Ursprung (LV95)",
+    "origin_lv95": [2635500, 1157400],
+    "chunks": [11, 10],
+    "chunk_m": 512,
+    "core_lv95": [2635500, 1157400, 2641132, 1162520],
+    "panorama_radius_m": 22000,
+    "osm_piste_name": "Lauberhorn Weltcup-Abfahrt"
+  }
+}
