@@ -116,6 +116,27 @@ def fetch_panorama(core, radius, out):
     print("panorama:", size, "x", size, "@", target_res, "m")
 
 
+def fetch_regio_core(core, out):
+    """swissALTIRegio (10 m) im Spielfeld: fuellt Gebiete ausserhalb von swissALTI3D (z. B. Italien)."""
+    dest = out / "regio_core.tif"
+    if dest.exists():
+        print("regio_core: vorhanden")
+        return
+    import rasterio
+    from rasterio.windows import from_bounds
+    url = "/vsicurl/https://data.geo.admin.ch/ch.swisstopo.swissaltiregio/swissaltiregio/swissaltiregio_2056_5728.tif"
+    b = (core[0] - 100, core[1] - 100, core[2] + 100, core[3] + 100)
+    with rasterio.Env(GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR", CPL_VSIL_CURL_USE_HEAD="NO"):
+        with rasterio.open(url) as src:
+            win = from_bounds(*b, transform=src.transform).round_offsets().round_lengths()
+            data = src.read(1, window=win)
+            prof = dict(driver="GTiff", width=data.shape[1], height=data.shape[0], count=1, dtype=data.dtype,
+                        crs=src.crs, transform=src.window_transform(win), compress="deflate", nodata=src.nodata)
+    with rasterio.open(dest, "w", **prof) as dst:
+        dst.write(data, 1)
+    print("regio_core:", data.shape, "@ 10 m")
+
+
 def fetch_lifts(out):
     download("https://data.geo.admin.ch/ch.swisstopo.bahnen-winter/bahnen-winter/bahnen-winter_2056.gpkg",
              out / "bahnen-winter_2056.gpkg")
@@ -150,6 +171,7 @@ def main(course):
     fetch_tiles("ch.swisstopo.swisssurface3d-raster", core, out / "surface3d_05m", lambda k: k.endswith(".tif"))
     fetch_tiles("ch.swisstopo.swissimage-dop10", core, out / "swissimage_2m", lambda k: k.endswith("_2_2056.tif"))
     fetch_panorama(core, cfg["panorama_radius_m"], out)
+    fetch_regio_core(core, out)
     fetch_lifts(ROOT / "data" / "raw")
     fetch_osm_pistes(core, out)
 

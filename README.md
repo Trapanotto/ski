@@ -11,7 +11,7 @@ Gelände, Wald, Gebäude und Lifte stammen aus swisstopo-Geodaten. Modelle und S
 | Mont Lachaux | Crans-Montana | spielbar |
 | Engiadina | St. Moritz | spielbar |
 | Silvano Beltrametti | Lenzerheide | spielbar |
-| Gran Becca | Zermatt / Cervinia | geplant |
+| Gran Becca | Zermatt / Cervinia | spielbar |
 
 Modi: **Rennen** (Zeit, Tore, Geist der Bestzeit), **Training** (Sprung zu Schlüsselstellen), **Freeride** (ganzer Berg, Lifte).
 Steuerung: Tastatur, Gamepad oder Touch.
@@ -39,7 +39,7 @@ Tore, Netze und Zielraum können danach in `data/work/<id>/<id>.blend` von Hand 
 
 ### Verwendete Daten
 
-- swissALTI3D (2 m), swissSURFACE3D Raster (0,5 m, für Baumhöhen und Gebäude), SWISSIMAGE (2 m), swissALTIRegio (Panorama), Bahnen Winter
+- swissALTI3D (2 m), ausserhalb davon (z. B. Italien bei Gran Becca) swissALTIRegio (10 m), swissSURFACE3D Raster (0,5 m, für Baumhöhen und Gebäude), SWISSIMAGE (2 m), swissALTIRegio (Panorama), Bahnen Winter
 - Pistenlinie der Rennstrecke aus OpenStreetMap
 
 Geodaten © swisstopo · Pistenlinien © OpenStreetMap-Mitwirkende (ODbL)

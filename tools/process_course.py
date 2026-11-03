@@ -19,6 +19,7 @@ from geo import mosaic, mosaic_max, wgs84_to_lv95  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 STEP = 4.0          # Raster fuer Physik + Gelaende-Mesh (m)
 HSCALE = 0.05       # Hoehen-Aufloesung im height.bin (m)
+TREELINE = 2350     # keine Baeume darueber (Gletscher/Fels geben sonst Fehltreffer)
 
 # Schluesselstellen: Anteil der Streckenlaenge (Hundschopf wird exakt eingerastet)
 SECTIONS = {
@@ -170,7 +171,26 @@ def main(course):
 
     print("1/7 Hoehenmodell 2 m")
     dem = mosaic(raw / "alti3d_2m", B, 2.0)[0].astype(np.float32)
-    dem = fill_nodata(dem, dem < -1000)
+    bad = dem < -1000
+    regio_f = raw / "regio_core.tif"
+    if bad.any() and regio_f.exists():
+        # Ausserhalb von swissALTI3D (z. B. Italien): swissALTIRegio 10 m, Naht auf 30 m weich ueberblendet
+        import rasterio
+        with rasterio.open(regio_f) as rs:
+            ra = rs.read(1).astype(np.float32)
+            tr = rs.transform
+        Hh, Ww = dem.shape
+        jj, ii = np.mgrid[0:Hh, 0:Ww]
+        Eg, Ng = E0 + ii * 2.0, N1 - jj * 2.0
+        rr = (Ng - tr.f) / tr.e - 0.5
+        cc = (Eg - tr.c) / tr.a - 0.5
+        regio = ndimage.map_coordinates(ra, [rr, cc], order=1, mode="nearest")
+        dval = ndimage.distance_transform_edt(~bad) * 2.0
+        wr = np.where(bad, 1.0, np.clip(1 - dval / 30.0, 0, 1))
+        dem = np.where(bad, regio, dem * (1 - wr) + regio * wr).astype(np.float32)
+        print(f"   {bad.mean() * 100:.0f} % der Flaeche aus swissALTIRegio (10 m)")
+        bad = dem < -1000
+    dem = fill_nodata(dem, bad)
     H2, W2 = dem.shape
 
     def sample(arr, res, E, N, order=1):
@@ -202,12 +222,19 @@ def main(course):
             if el["id"] in cfg["osm_way_ids"]:
                 e, n = wgs84_to_lv95([p["lon"] for p in el["geometry"]], [p["lat"] for p in el["geometry"]])
                 byid[el["id"]] = np.c_[e, n]
-        parts = [byid[cfg["osm_way_ids"][0]]]
+        # Uebergang: Punktpaar (Ende des bisherigen Stuecks / Einstieg im neuen Weg) mit kleinster
+        # Kosten = Abstand + Strafe fuer Gegensteigung, damit die Bruecke immer bergab fuehrt.
+        cur = resample_line(byid[cfg["osm_way_ids"][0]], 10.0)
         for wid in cfg["osm_way_ids"][1:]:
-            nxt = byid[wid]
-            k = int(np.argmin(np.hypot(nxt[:, 0] - parts[-1][-1, 0], nxt[:, 1] - parts[-1][-1, 1])))
-            parts.append(nxt[k + 1:] if np.hypot(*(nxt[k] - parts[-1][-1])) < 1 else nxt[k:])
-        line = np.vstack(parts)
+            nxt = resample_line(byid[wid], 10.0)
+            ha = sample(dem, 2, cur[:, 0], cur[:, 1])
+            hb = sample(dem, 2, nxt[:, 0], nxt[:, 1])
+            dd = np.hypot(cur[:, None, 0] - nxt[None, :, 0], cur[:, None, 1] - nxt[None, :, 1])
+            cost = dd + 8 * np.clip(hb[None, :] - ha[:, None] + 0.15 * dd, 0, None)
+            ia, ib = np.unravel_index(np.argmin(cost), cost.shape)
+            print(f"   Uebergang zu {wid}: Luecke {dd[ia, ib]:.0f} m, {ha[ia]:.0f} -> {hb[ib]:.0f} m")
+            cur = np.vstack([cur[: ia + 1], nxt[ib:]])
+        line = cur
     else:
         line = chain_ways(ways, lambda e, n: float(sample(dem, 2, e, n)[0]))
     line = resample_line(line, 2.0)
@@ -256,7 +283,7 @@ def main(course):
     terrain_slope = np.degrees(np.arctan(np.hypot(gx2, gy2)))
     greenish = (g >= r * 0.92) & (g > b * 1.02)
     shadow = bright < 60
-    treeish = tall & (greenish | shadow | (rough > 1.4))
+    treeish = tall & (greenish | shadow | (rough > 1.4)) & (dem < TREELINE)
     treeish = ndimage.binary_opening(treeish, iterations=1)
     built = (tall & ~greenish & ~shadow & (rough < 1.4) & (terrain_slope < 32) & (dist > 8)
              & ~ndimage.binary_dilation(treeish, iterations=1))
@@ -269,6 +296,13 @@ def main(course):
         m = lab[sl] == i + 1
         area = m.sum() * 4.0
         if not (30 <= area <= 1500):
+            continue
+        # Hauswand-Test: rundherum (2-4 m Abstand) muss das Oberflaechenmodell fast auf Bodenhoehe liegen
+        pad = np.s_[max(sl[0].start - 4, 0):sl[0].stop + 4, max(sl[1].start - 4, 0):sl[1].stop + 4]
+        mm = lab[pad] == i + 1
+        ring = ndimage.binary_dilation(mm, iterations=3) & ~ndimage.binary_dilation(mm, iterations=1)
+        alpine = float(np.median(dem[sl][m])) > TREELINE
+        if alpine and ring.any() and (ndsm[pad][ring] < 1.5).mean() < 0.4:
             continue
         yy, xx = np.nonzero(m)
         E = E0 + (xx + sl[1].start) * 2.0
@@ -421,6 +455,7 @@ def main(course):
                               "y": round(float(ys[finish_i]), 2), "w": 40.0}},
         "pistes": pistes,
         "sun": [round(float(v), 4) for v in SUN],
+        "pano_detail_m": cfg.get("pano_detail_m"),
         "attribution": "Geodaten © swisstopo · Pistenlinien © OpenStreetMap-Mitwirkende (ODbL)",
     }
     (pub / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

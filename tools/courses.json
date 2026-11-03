@@ -239,5 +239,75 @@
       "Heimberg",
       "Zielhang"
     ]
+  },
+  "granbecca": {
+    "name": "Gran Becca",
+    "place": "Zermatt / Cervinia",
+    "comment": "Grenzueberschreitend. Rennlinie = OSM 'Grenzpiste' + 'Ventina Glacier' + 'Ventina Ghiacciaio' (gespleisst, Gletscherquerung ueberbrueckt); Start ~3720 m Gobba di Rollin / Ziel ~2840 m Laghi Cime Bianche. Italien: swissALTIRegio 10 m",
+    "origin_lv95": [
+      2616700,
+      1083200
+    ],
+    "chunks": [
+      13,
+      10
+    ],
+    "chunk_m": 512,
+    "core_lv95": [
+      2616700,
+      1083200,
+      2623356,
+      1088320
+    ],
+    "panorama_radius_m": 22000,
+    "pano_detail_m": 6500,
+    "osm_way_ids": [
+      1305881375,
+      30833441,
+      23399485
+    ],
+    "osm_splice": true,
+    "start_alt": 3721,
+    "finish_alt": 2840,
+    "sections": [
+      [
+        "Start Gobba di Rollin",
+        0.0
+      ],
+      [
+        "Grenze Schweiz–Italien",
+        0.07
+      ],
+      [
+        "Ventina-Gletscher",
+        0.17
+      ],
+      [
+        "Gletscherquerung",
+        0.3
+      ],
+      [
+        "Ventina-Steilhang",
+        0.45
+      ],
+      [
+        "Colle Cime Bianche",
+        0.6
+      ],
+      [
+        "Gletscherzunge",
+        0.72
+      ],
+      [
+        "Zielhang Cime Bianche",
+        0.88
+      ]
+    ],
+    "splits": [
+      "Ventina-Gletscher",
+      "Ventina-Steilhang",
+      "Gletscherzunge",
+      "Zielhang Cime Bianche"
+    ]
   }
 }

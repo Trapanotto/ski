@@ -13,7 +13,7 @@ const COURSES = [
   { id: 'montlachaux', name: 'Mont Lachaux', place: 'Crans-Montana', info: '≈2,3 km · 2210 → 1545 m', ready: true },
   { id: 'engiadina', name: 'Engiadina', place: 'St. Moritz', info: '≈2,5 km · 2745 → 2040 m', ready: true },
   { id: 'beltrametti', name: 'Silvano Beltrametti', place: 'Lenzerheide', info: '≈2 km · 2257 → 1560 m', ready: true },
-  { id: 'granbecca', name: 'Gran Becca', place: 'Zermatt / Cervinia', info: 'Höchste Abfahrt', ready: false },
+  { id: 'granbecca', name: 'Gran Becca', place: 'Zermatt / Cervinia', info: '≈4,3 km · 3720 → 2840 m · CH → IT', ready: true },
 ];
 const MODE_HINT: Record<Mode, string> = {
   race: `Auf Zeit durch alle Tore. Verpasstes Tor = +${GATE_PENALTY} s. Beste Fahrt wird als Geist gespeichert.`,
@@ -479,6 +479,7 @@ if (import.meta.env.DEV) {
     },
     jump: (s: number) => { startRun(s); },
     /** Simulation ohne Rendern vorspulen (Tests im verdeckten Fenster). */
+    render: () => { if (renderer && world && skier) { world.update(rig.cam, skier.pos); renderer.render(world.scene, rig.cam); } },
     run: (sec: number) => { for (let t = 0; t < sec && running && !paused; t += 1 / 60) { input.update(1 / 60); simulate(1 / 60); } },
     world: () => world,
     autopilot: false,

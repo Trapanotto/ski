@@ -191,8 +191,16 @@ def pano_ring(name, stride, x_min, x_max, z_min, z_max, hole, lower_box, lower_b
 
 mx, mz = SIZE_X / 2, SIZE_Z / 2
 R_NEAR = 9000
-pano_ring("Panorama_Near", 2, mx - R_NEAR, mx + R_NEAR, mz - R_NEAR, mz + R_NEAR,
-          hole=(200, SIZE_X - 200, 200, SIZE_Z - 200), lower_box=(0, 0, 0, 0), lower_by=0)
+R_DET = meta.get("pano_detail_m")          # optionaler 25-m-Ring (z. B. Matterhorn neben dem Spielfeld)
+if R_DET:
+    pano_ring("Panorama_Detail", 1, mx - R_DET, mx + R_DET, mz - R_DET, mz + R_DET,
+              hole=(200, SIZE_X - 200, 200, SIZE_Z - 200), lower_box=(0, 0, 0, 0), lower_by=0)
+    pano_ring("Panorama_Near", 2, mx - R_NEAR, mx + R_NEAR, mz - R_NEAR, mz + R_NEAR,
+              hole=(mx - R_DET + 150, mx + R_DET - 150, mz - R_DET + 150, mz + R_DET - 150),
+              lower_box=(mx - R_DET + 75, mx + R_DET - 75, mz - R_DET + 75, mz + R_DET - 75), lower_by=12)
+else:
+    pano_ring("Panorama_Near", 2, mx - R_NEAR, mx + R_NEAR, mz - R_NEAR, mz + R_NEAR,
+              hole=(200, SIZE_X - 200, 200, SIZE_Z - 200), lower_box=(0, 0, 0, 0), lower_by=0)
 pano_ring("Panorama_Far", 8, -1e9, 1e9, -1e9, 1e9,
           hole=(mx - R_NEAR + 400, mx + R_NEAR - 400, mz - R_NEAR + 400, mz + R_NEAR - 400),
           lower_box=(mx - R_NEAR + 200, mx + R_NEAR - 200, mz - R_NEAR + 200, mz + R_NEAR - 200), lower_by=25)
